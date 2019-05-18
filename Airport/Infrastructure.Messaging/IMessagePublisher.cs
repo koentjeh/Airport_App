@@ -2,7 +2,7 @@
 
 namespace Airport.Infrastructure.Messaging
 {
-    interface IMessagePublisher
+    public interface IMessagePublisher
     {
         /// <summary>
         /// Publish a message.
