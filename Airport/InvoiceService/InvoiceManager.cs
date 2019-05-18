@@ -20,9 +20,9 @@ namespace Airport.InvoiceService
         private const decimal HOURLY_RATE = 18.50M;
         private IMessageHandler _messageHandler;
         private IInvoiceRepository _repo;
-        private IEmailCommunicator _emailCommunicator;
+        private IEMailCommunicator _emailCommunicator;
 
-        public InvoiceManager(IMessageHandler messageHandler, IInvoiceRepository repo, IEmailCommunicator emailCommunicator)
+        public InvoiceManager(IMessageHandler messageHandler, IInvoiceRepository repo, IEMailCommunicator emailCommunicator)
         {
             _messageHandler = messageHandler;
             _repo = repo;

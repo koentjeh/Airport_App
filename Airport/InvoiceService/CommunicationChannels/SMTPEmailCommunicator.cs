@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace Pitstop.InvoiceService.CommunicationChannels
+namespace Airport.InvoiceService.CommunicationChannels
 {
-    public class SMTPEmailCommunicator : IEmailCommunicator
+    public class SMTPEmailCommunicator : IEMailCommunicator
     {
         private string _smptServer;
         private int _smtpPort;
