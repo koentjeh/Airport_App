@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using Serilog;
-using System.IO;
 
 namespace Airport.FlightManagementAPI
 {
@@ -10,12 +9,13 @@ namespace Airport.FlightManagementAPI
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args)
+                .Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        private static IWebHost BuildWebHost(string[] args)
         {
-            return WebHost.CreateDefaultBuilder()
+            return WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
                 .UseSerilog()
                 .UseHealthChecks("/hc")

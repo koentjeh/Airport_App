@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Airport.FlightManagementAPI.DataAccess;
 using Airport.FlightManagementAPI.Model;
 using AutoMapper;
@@ -9,7 +9,7 @@ using Airport.Infrastructure.Messaging;
 using Airport.FlightManagementAPI.Events;
 using Airport.FlightManagementAPI.Commands;
 
-namespace Airport.FlightManagementAPI.Cotrollers
+namespace Airport.FlightManagementAPI.Controllers
 {
     [Route("/api/[controller]")]
     public class FlightController : Controller
