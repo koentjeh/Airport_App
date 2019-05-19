@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
 using Airport.Infrastructure.Messaging;
-using Airport.FlightService.Events;
-using Airport.FlightService.Model;
-using Airport.FlightService.Repositories;
+using Airport.RentalService.Events;
+using Airport.RentalService.Model;
+using Airport.RentalService.Repositories;
 using System;
 using System.Linq;
 using System.Net.Mail;
@@ -12,15 +12,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Airport.FlightService
+namespace Airport.RentalService
 {
-    public class FlightManager : IHostedService, IMessageHandlerCallback
+    public class RentalManager : IHostedService, IMessageHandlerCallback
     {
         private const decimal HOURLY_RATE = 18.50M;
         private IMessageHandler _messageHandler;
-        private IFlightRepository _repo;
+        private IRentalRepository _repo;
 
-        public FlightManager(IMessageHandler messageHandler, IFlightRepository repo)
+        public RentalManager(IMessageHandler messageHandler, IRentalRepository repo)
         {
             _messageHandler = messageHandler;
             _repo = repo;
@@ -43,26 +43,26 @@ namespace Airport.FlightService
             JObject messageObject = MessageSerializer.Deserialize(message);
             switch (messageType)
             {
-                case "FlightRegistered":
-                    await HandleAsync(messageObject.ToObject<FlightRegistered>());
+                case "RentalRegistered":
+                    await HandleAsync(messageObject.ToObject<RentalRegistered>());
                     break;
             }
             return true;
         }
 
-        private async Task HandleAsync(FlightRegistered fr)
+        private async Task HandleAsync(RentalRegistered fr)
         {
-            Flight flight = new Flight
+            Rental rental = new Rental
             {
-                FlightId = fr.FlightId,
-                DepartureDate = fr.DepartureDate,
-                Runway = fr.Runway,
-                ArrivalDate = fr.ArrivalDate,
-                City = fr.City,
-                Pilot = fr.Pilot
+                RentalId = fr.RentalId,
+                RenterId = fr.RenterId,
+                Location = fr.Location,
+                Price = fr.Price,
+                StartDate = fr.StartDate,
+                EndDate = fr.EndDate
             };
 
-            await _repo.RegisterFlightAsync(flight);
+            await _repo.RegisterRentalAsync(rental);
         }
     }
 }
