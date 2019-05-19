@@ -49,7 +49,7 @@ namespace Airport.FlightService.Repositories
                       "  ArrivalDate datetime," +
                       "  City varchar(50)," +
                       " Pilot varchar(50)," +
-                      "  PRIMARY KEY(CustomerId));";
+                      "  PRIMARY KEY(FlightId));";
 
                 await conn.ExecuteAsync(sql);
             }

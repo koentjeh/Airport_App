@@ -43,7 +43,7 @@ namespace Airport.FlightService
                         string rabbitMQHost = rabbitMQConfigSection["Host"];
                         string rabbitMQUserName = rabbitMQConfigSection["UserName"];
                         string rabbitMQPassword = rabbitMQConfigSection["Password"];
-                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Pitstop", "Invoicing", ""); ;
+                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "Invoicing", ""); ;
                     });
 
                     services.AddTransient<IFlightRepository>((svc) =>
