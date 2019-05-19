@@ -20,11 +20,11 @@ namespace Airport.FlightManagementAPI.Migrations
                 b.Property<string>("FlightId")
                     .ValueGeneratedOnAdd();
 
-                b.Property<string>("DepartureDate");
+                b.Property<DateTime>("DepartureDate");
 
                 b.Property<string>("Runway");
 
-                b.Property<string>("ArrivalDate");
+                b.Property<DateTime>("ArrivalDate");
 
                 b.Property<string>("City");
 

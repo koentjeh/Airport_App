@@ -2,15 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Airport.Infrastructure.Messaging;
-using Airport.InvoiceService.CommunicationChannels;
-using Airport.InvoiceService.Repositories;
+using Airport.FlightService.Repositories;
 using Serilog;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Airport.InvoiceService
+namespace Airport.FlightService
 {
     class Program
     {
@@ -47,23 +46,11 @@ namespace Airport.InvoiceService
                         return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Pitstop", "Invoicing", ""); ;
                     });
 
-                    services.AddTransient<IInvoiceRepository>((svc) =>
+                    services.AddTransient<IFlightRepository>((svc) =>
                     {
-                        var sqlConnectionString = hostContext.Configuration.GetConnectionString("InvoiceServiceCN");
-                        return new SqlServerInvoiceRepository(sqlConnectionString);
+                        var sqlConnectionString = hostContext.Configuration.GetConnectionString("FlightServiceCN");
+                        return new SqlServerFlightRepository(sqlConnectionString);
                     });
-
-                    services.AddTransient<IEMailCommunicator>((svc) =>
-                    {
-                        var mailConfigSection = hostContext.Configuration.GetSection("Email");
-                        string mailHost = mailConfigSection["Host"];
-                        int mailPort = Convert.ToInt32(mailConfigSection["Port"]);
-                        string mailUserName = mailConfigSection["User"];
-                        string mailPassword = mailConfigSection["Pwd"];
-                        return new SMTPEmailCommunicator(mailHost, mailPort, mailUserName, mailPassword);
-                    });
-
-                    services.AddHostedService<InvoiceManager>();
                 })
                 .UseSerilog((hostContext, loggerConfiguration) =>
                 {

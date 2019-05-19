@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Airport.Infrastructure.Messaging;
+﻿using Airport.Infrastructure.Messaging;
+using System;
 
-namespace Airport.FlightManagementAPI.Events
+namespace Airport.FlightService.Events
 {
     public class FlightRegistered : Event
     {
@@ -17,7 +14,7 @@ namespace Airport.FlightManagementAPI.Events
 
         public FlightRegistered(Guid messageId, string flightId, DateTime departureDate, string runway, DateTime arrivalDate, string city, string pilot) : base(messageId)
         {
-            FlightId = flightId;
+         FlightId = flightId;
             DepartureDate = departureDate;
             Runway = runway;
             ArrivalDate = arrivalDate;
