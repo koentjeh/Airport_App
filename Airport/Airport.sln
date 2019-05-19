@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalManagementAPI", "Rent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightManagementAPI", "FlightManagementAPI\FlightManagementAPI.csproj", "{360B7D7C-ED71-439A-8036-F7EC86D5659C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagementAPI", "CustomerManagementAPI\CustomerManagementAPI.csproj", "{325C65EC-0370-4843-80A5-47C33201A805}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +37,6 @@ Global
 		{9E1E3FF3-88A0-495D-B155-2FC0FD11BD06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E1E3FF3-88A0-495D-B155-2FC0FD11BD06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E1E3FF3-88A0-495D-B155-2FC0FD11BD06}.Release|Any CPU.Build.0 = Release|Any CPU
-		{360B7D7C-ED71-439A-8036-F7EC86D5659C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{360B7D7C-ED71-439A-8036-F7EC86D5659C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{360B7D7C-ED71-439A-8036-F7EC86D5659C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{360B7D7C-ED71-439A-8036-F7EC86D5659C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
