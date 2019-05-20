@@ -82,18 +82,7 @@ services:
       - sqlserver
       - mailserver
     environment:
-      - AIRPORT_ENVIRONMENT=Production
-
-  # notificationservice:
-  #   image: airport/notificationservice:latest
-  #   build: NotificationService
-  #   container_name: notificationservice
-  #   depends_on:
-  #     - rabbitmq
-  #     - sqlserver
-  #     - mailserver
-  #   environment:
-  #     - AIRPORT_ENVIRONMENT=Production
+      - DOTNET_ENVIRONMENT=Production
 
   timeservice:
     image: airport/timeservice:latest
@@ -102,7 +91,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      - AIRPORT_ENVIRONMENT=Production
+      - DOTNET_ENVIRONMENT=Production
 
 volumes:
   sqlserverdata:
