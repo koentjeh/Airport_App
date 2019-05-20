@@ -2,15 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Airport.Infrastructure.Messaging;
-using Airport.InvoiceService.CommunicationChannels;
-using Airport.InvoiceService.Repositories;
+using Airport.RentalService.Repositories;
 using Serilog;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Airport.InvoiceService
+namespace Airport.RentalService
 {
     class Program
     {
@@ -44,26 +43,14 @@ namespace Airport.InvoiceService
                         string rabbitMQHost = rabbitMQConfigSection["Host"];
                         string rabbitMQUserName = rabbitMQConfigSection["UserName"];
                         string rabbitMQPassword = rabbitMQConfigSection["Password"];
-                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "Invoicing", ""); ;
+                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "Rentals", ""); ;
                     });
 
-                    services.AddTransient<IInvoiceRepository>((svc) =>
+                    services.AddTransient<IRentalRepository>((svc) =>
                     {
-                        var sqlConnectionString = hostContext.Configuration.GetConnectionString("InvoiceServiceCN");
-                        return new SqlServerInvoiceRepository(sqlConnectionString);
+                        var sqlConnectionString = hostContext.Configuration.GetConnectionString("RentalServiceCN");
+                        return new SqlServerRentalRepository(sqlConnectionString);
                     });
-
-                    services.AddTransient<IEMailCommunicator>((svc) =>
-                    {
-                        var mailConfigSection = hostContext.Configuration.GetSection("Email");
-                        string mailHost = mailConfigSection["Host"];
-                        int mailPort = Convert.ToInt32(mailConfigSection["Port"]);
-                        string mailUserName = mailConfigSection["User"];
-                        string mailPassword = mailConfigSection["Pwd"];
-                        return new SMTPEmailCommunicator(mailHost, mailPort, mailUserName, mailPassword);
-                    });
-
-                    services.AddHostedService<InvoiceManager>();
                 })
                 .UseSerilog((hostContext, loggerConfiguration) =>
                 {

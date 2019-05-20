@@ -9,13 +9,13 @@ namespace Airport.FlightManagementAPI.Commands
     public class RegisterFlight : Command
     {
         public readonly string FlightId;
-        public readonly string DepartureDate;
+        public readonly DateTime DepartureDate;
         public readonly string Runway;
-        public readonly string ArrivalDate;
+        public readonly DateTime ArrivalDate;
         public readonly string City;
         public readonly string Pilot;
 
-        public RegisterFlight(Guid messageId, string flightId, string departureDate , string runway , string arrivalDate , string city , string pilot) : base(messageId)
+        public RegisterFlight(Guid messageId, string flightId, DateTime departureDate , string runway , DateTime arrivalDate , string city , string pilot) : base(messageId)
         {
             FlightId = flightId;
             DepartureDate = departureDate;

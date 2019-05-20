@@ -11,10 +11,10 @@ namespace Airport.RentalManagementAPI.Events
         public readonly string RenterId;
         public readonly string Location;
         public readonly string Price;
-        public readonly string StartDate;
-        public readonly string EndDate;
+        public readonly DateTime StartDate;
+        public readonly DateTime EndDate;
 
-        public RentalRegistered(Guid messageId, string rentalId, string renterId, string location, string price, string startDate, string endDate) : base(messageId)
+        public RentalRegistered(Guid messageId, string rentalId, string renterId, string location, string price, DateTime startDate, DateTime endDate) : base(messageId)
         {
             RentalId = rentalId;
             RenterId = renterId;

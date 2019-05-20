@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Airport.FlightManagementAPI.Model
+namespace Airport.FlightService.Model
 {
     public class Flight
     {
@@ -13,6 +12,5 @@ namespace Airport.FlightManagementAPI.Model
         public DateTime ArrivalDate { get; set; }
         public string City { get; set; }
         public string Pilot { get; set; }
-
     }
 }

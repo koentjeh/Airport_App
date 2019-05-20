@@ -1,10 +1,11 @@
-﻿using System;
-using Airport.Infrastructure.Messaging;
+﻿using Airport.Infrastructure.Messaging;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-
-namespace Airport.RentalManagementAPI.Commands
+namespace Airport.RentalService.Events
 {
-    public class RegisterRental : Command
+    public class RentalRegistered : Event
     {
         public readonly string RentalId;
         public readonly string RenterId;
@@ -13,7 +14,7 @@ namespace Airport.RentalManagementAPI.Commands
         public readonly DateTime StartDate;
         public readonly DateTime EndDate;
 
-        public RegisterRental(Guid messageId, string rentalId, string renterId, string location, string price, DateTime startDate, DateTime endDate) : base(messageId)
+        public RentalRegistered(Guid messageId, string rentalId, string renterId, string location, string price, DateTime startDate, DateTime endDate) : base(messageId)
         {
             RentalId = rentalId;
             RenterId = renterId;

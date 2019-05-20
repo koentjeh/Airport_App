@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Airport.RentalManagementAPI.Model
+namespace Airport.RentalService.Model
 {
     public class Rental
     {
