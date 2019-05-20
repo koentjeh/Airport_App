@@ -1,18 +1,17 @@
-﻿using System;
-using Airport.Infrastructure.Messaging;
-using System.Collections.Generic;
-using System.Text;
+﻿using Airport.Infrastructure.Messaging;
+using System;
 
 namespace Airport.NotificationService.Events
 {
-    public class CustomerRegistered
+    public class CustomerRegistered : Event
     {
-        public string CustomerId { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Phone { get; set; }
-        public bool Luggage { get; set; }
+        public readonly string CustomerId;
+        public readonly string Name;
+        public readonly string Address;
+        public readonly string City;
+        public readonly string Phone;
+        public readonly bool Luggage;
+
 
         public CustomerRegistered(Guid messageId, string customerId, string name, string address, string city, string phone, bool luggage) : base(messageId)
         {
