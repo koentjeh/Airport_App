@@ -46,18 +46,8 @@ namespace Airport.NotificationService.Repositories
                       "  Address varchar(50)," +
                       "  City varchar(50)," +
                       "  Phone varchar(50)," +
-                      "  Luggage boolean," +
+                      "  Luggage BIT," +
                       "  PRIMARY KEY(CustomerId));" +
-
-                      "IF OBJECT_ID('Flight') IS NULL " +
-                      "CREATE TABLE Flight (" +
-                      "  FlightId varchar(50) NOT NULL," +
-                      "  DepartureTime datetime2 NOT NULL," +
-                      "  Runway varchar(50) NOT NULL," +
-                      "  ArrivalDate datetime2 NOT NULL," +
-                      "  City varchar(250) NOT NULL," +
-                      "  Pilot varchar(250) NOT NULL," +
-                      "  PRIMARY KEY(FlightId));";
 
                 await conn.ExecuteAsync(sql);
             }
@@ -68,15 +58,10 @@ namespace Airport.NotificationService.Repositories
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 string sql =
-                    "insert into Flight(FlightId, DepartureTime, Runway, ArrivalDate, City, Pilot) " +
-                    "values(@FlightId, @DepartureTime, @Runway, @ArrivalDate, @City, @Pilot);";
+                    "insert into Customer(CustomerId, Name, Address, City, Phone, Luggage) " +
+                    "values(@CustomerId, @Name, @Address, @City, @Phone, @Luggage);";
                 await conn.ExecuteAsync(sql, customer);
             }
-        }
-
-        public Task RegisterFlightAsync(Flight flight)
-        {
-            throw new NotImplementedException();
-        }
+        }  
     }
 }

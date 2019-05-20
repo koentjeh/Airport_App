@@ -9,6 +9,5 @@ namespace Airport.NotificationService.Repositories
     public interface INotificationRepository
     {
         Task RegisterCustomerAsync(Customer customer);
-        Task RegisterFlightAsync(Flight flight);
     }
 }

@@ -22,7 +22,9 @@ namespace Airport.FlightManagementAPI.Migrations
 
                 b.Property<DateTime>("DepartureDate");
 
-                b.Property<string>("Runway");
+                b.Property<string>("Gate");
+
+                b.Property<string>("CheckInCounter");
 
                 b.Property<DateTime>("ArrivalDate");
 
