@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Airport.Infrastructure.Messaging</AssemblyName>
     <RootNamespace>Airport.Infrastructure.Messaging</RootNamespace>
+    <PackageId>Airport.Infrastructure.Messaging_sample</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

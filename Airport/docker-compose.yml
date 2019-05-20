@@ -40,17 +40,6 @@ services:
     environment:
       - ACCEPT_EULA=Y 
 
-  flightmanagementapi:
-    image: airport/flightmanagementapi:latest
-    build: FlightManagementAPI
-    depends_on:
-      - rabbitmq
-      - sqlserver
-    ports:
-      - "5000"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-
   customermanagementapi:
     image: airport/customermanagementapi:latest
     build: CustomerManagementAPI
@@ -59,6 +48,17 @@ services:
       - sqlserver
     ports:
       - "5100"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  flightmanagementapi:
+    image: airport/flightmanagementapi:latest
+    build: FlightManagementAPI
+    depends_on:
+      - rabbitmq
+      - sqlserver
+    ports:
+      - "5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 

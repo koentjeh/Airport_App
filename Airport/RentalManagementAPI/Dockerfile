@@ -1,21 +1,16 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+FROM microsoft/dotnet:sdk AS build-env
+WORKDIR /RentalManagementAPI
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /src
-COPY ["RentalManagementAPI/RentalManagementAPI.csproj", "RentalManagementAPI/"]
-COPY ["Infrastructure.Messaging/Infrastructure.Messaging.csproj", "Infrastructure.Messaging/"]
-RUN dotnet restore "RentalManagementAPI/RentalManagementAPI.csproj"
-COPY . .
-WORKDIR "/src/RentalManagementAPI"
-RUN dotnet build "RentalManagementAPI.csproj" -c Release -o /app
-
-FROM build AS publish
-RUN dotnet publish "RentalManagementAPI.csproj" -c Release -o /app
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app .
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Airport.RentalManagementAPI.dll"]

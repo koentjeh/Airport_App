@@ -10,12 +10,8 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
+FROM microsoft/dotnet:2.2-runtime
 COPY --from=build-env /app/out .
 
-# Expose ports
-EXPOSE 5100/tcp
-ENV ASPNETCORE_URLS http://*:5100
-HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:5100/hc || exit 1
-
-ENTRYPOINT ["dotnet", "Airport.CustomerManagementAPI.dll"]
+# Start
+ENTRYPOINT ["dotnet", "Airport.TimeService.dll"]
