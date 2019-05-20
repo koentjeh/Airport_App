@@ -11,9 +11,8 @@ namespace Airport.InvoiceService.Repositories
     {
         Task RegisterCustomerAsync(Customer customer);
         Task<Customer> GetCustomerAsync(string customerId);
-        Task RegisterMaintenanceJobAsync(MaintenanceJob job);
-        Task MarkMaintenanceJobAsFinished(string jobId, DateTime startTime, DateTime endTime);
-        Task<IEnumerable<MaintenanceJob>> GetMaintenanceJobsToBeInvoicedAsync();
+        Task RegisterFlightAsync(Flight flight);
+        Task<Flight> GetFlightAsync(string flightId);
         Task RegisterInvoiceAsync(Invoice invoice);
     }
 }
