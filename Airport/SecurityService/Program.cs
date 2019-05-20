@@ -43,12 +43,12 @@ namespace SecurityService
                         string rabbitMQHost = rabbitMQConfigSection["Host"];
                         string rabbitMQUserName = rabbitMQConfigSection["UserName"];
                         string rabbitMQPassword = rabbitMQConfigSection["Password"];
-                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Pitstop", "Auditlog", ""); ;
+                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "SecurityLog", ""); ;
                     });
 
                     services.AddTransient<SecurityLogManagerConfig>((svc) =>
                     {
-                        var auditlogConfigSection = hostContext.Configuration.GetSection("Auditlog");
+                        var auditlogConfigSection = hostContext.Configuration.GetSection("SecurityLog");
                         string logPath = auditlogConfigSection["path"];
                         return new SecurityLogManagerConfig { LogPath = logPath };
                     });
