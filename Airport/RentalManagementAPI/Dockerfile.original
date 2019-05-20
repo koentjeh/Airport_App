@@ -6,7 +6,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["RentalManagementAPI/RentalManagementAPI.csproj", "RentalManagementAPI/"]
-COPY ["Infrastructure.Messaging/Infrastructure.Messaging.csproj", "Infrastructure.Messaging/"]
 RUN dotnet restore "RentalManagementAPI/RentalManagementAPI.csproj"
 COPY . .
 WORKDIR "/src/RentalManagementAPI"
@@ -18,4 +17,4 @@ RUN dotnet publish "RentalManagementAPI.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Airport.RentalManagementAPI.dll"]
+ENTRYPOINT ["dotnet", "RentalManagementAPI.dll"]
