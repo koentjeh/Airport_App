@@ -1,22 +1,21 @@
 ﻿using Airport.Infrastructure.Messaging;
-using System;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Text;
-using Newtonsoft.Json.Linq;
 using Serilog;
-using Microsoft.Extensions.Hosting;
-using System.Threading;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace SecurityService
 {
-    public class SecurityLogManager : IHostedService, IMessageHandlerCallback
+    class SecuritylogManager : IHostedService, IMessageHandlerCallback
     {
         IMessageHandler _messageHandler;
         private string _logPath;
 
-        public SecurityLogManager(IMessageHandler messageHandler, SecurityLogManagerConfig config)
+        public SecuritylogManager(IMessageHandler messageHandler, SecuritylogManagerConfig config)
         {
             _messageHandler = messageHandler;
             _logPath = config.LogPath;
