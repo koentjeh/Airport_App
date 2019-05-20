@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SecurityService
 {
-    public class SecurityLogManagerConfig
+    class SecuritylogManagerConfig
     {
         public string LogPath { get; set; }
     }

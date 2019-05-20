@@ -1,12 +1,11 @@
-﻿using Airport.Infrastructure.Messaging;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Airport.Infrastructure.Messaging;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SecurityService
@@ -43,17 +42,17 @@ namespace SecurityService
                         string rabbitMQHost = rabbitMQConfigSection["Host"];
                         string rabbitMQUserName = rabbitMQConfigSection["UserName"];
                         string rabbitMQPassword = rabbitMQConfigSection["Password"];
-                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "SecurityLog", ""); ;
+                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "Security", ""); ;
                     });
 
-                    services.AddTransient<SecurityLogManagerConfig>((svc) =>
+                    services.AddTransient<SecuritylogManagerConfig>((svc) =>
                     {
-                        var auditlogConfigSection = hostContext.Configuration.GetSection("SecurityLog");
+                        var auditlogConfigSection = hostContext.Configuration.GetSection("Auditlog");
                         string logPath = auditlogConfigSection["path"];
-                        return new SecurityLogManagerConfig { LogPath = logPath };
+                        return new SecuritylogManagerConfig { LogPath = logPath };
                     });
 
-                    services.AddHostedService<SecurityLogManager>();
+                    services.AddHostedService<SecuritylogManager>();
                 })
                 .UseSerilog((hostContext, loggerConfiguration) =>
                 {
