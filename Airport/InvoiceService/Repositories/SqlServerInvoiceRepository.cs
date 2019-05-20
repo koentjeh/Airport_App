@@ -46,21 +46,10 @@ namespace Airport.InvoiceService.Repositories
                       "  CustomerId varchar(50) NOT NULL," +
                       "  Name varchar(50) NOT NULL," +
                       "  Address varchar(50)," +
-                      "  PostalCode varchar(50)," +
                       "  City varchar(50)," +
+                      "  Phone varchar(50)," +
+                      "  Luggage BIT," +
                       "  PRIMARY KEY(CustomerId));" +
-
-                      "IF OBJECT_ID('MaintenanceJob') IS NULL " +
-                      "CREATE TABLE MaintenanceJob (" +
-                      "  JobId varchar(50) NOT NULL," +
-                      "  LicenseNumber varchar(50) NOT NULL," +
-                      "  CustomerId varchar(50) NOT NULL," +
-                      "  Description varchar(250) NOT NULL," +
-                      "  StartTime datetime2 NULL," +
-                      "  EndTime datetime2 NULL," +
-                      "  Finished bit NOT NULL," +
-                      "  InvoiceSent bit NOT NULL," +
-                      "  PRIMARY KEY(JobId));" +
 
                       "IF OBJECT_ID('Invoice') IS NULL " +
                       "CREATE TABLE Invoice (" +
@@ -69,8 +58,19 @@ namespace Airport.InvoiceService.Repositories
                       "  CustomerId varchar(50) NOT NULL," +
                       "  Amount decimal(5,2) NOT NULL," +
                       "  Specification text," +
-                      "  JobIds varchar(250)," +
-                      "  PRIMARY KEY(InvoiceId));";
+                      "  FlightId varchar(50)," +
+                      "  PRIMARY KEY(InvoiceId));" +
+
+                "IF OBJECT_ID('Flight') IS NULL " +
+                      "CREATE TABLE Flight (" +
+                      "  FlightId varchar(50) NOT NULL," +
+                      "  DepartureDate datetime NOT NULL," +
+                      "  Gate varchar(50)," +
+                      "  CheckInGate varchar(50)," +
+                      "  ArrivalDate datetime," +
+                      "  City varchar(50)," +
+                      " Pilot varchar(50)," +
+                      "  PRIMARY KEY(FlightId));";
 
                 await conn.ExecuteAsync(sql);
             }
@@ -85,17 +85,6 @@ namespace Airport.InvoiceService.Repositories
             }
         }
 
-        public async Task RegisterMaintenanceJobAsync(MaintenanceJob job)
-        {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
-            {
-                string sql =
-                    "insert into MaintenanceJob(JobId, LicenseNumber, CustomerId, Description, Finished, InvoiceSent) " +
-                    "values(@JobId, @LicenseNumber, @CustomerId, @Description, 0, 0);";
-                await conn.ExecuteAsync(sql, job);
-            }
-        }
-
         public async Task RegisterCustomerAsync(Customer customer)
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
@@ -107,29 +96,23 @@ namespace Airport.InvoiceService.Repositories
             }
         }
 
-        public async Task MarkMaintenanceJobAsFinished(string jobId, DateTime startTime, DateTime endTime)
+        public async Task RegisterFlightAsync(Flight flight)
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query =
-                    "update MaintenanceJob " +
-                    "set StartTime = @StartTime, " +
-                    "    EndTime = @EndTime, " +
-                    "    Finished = 1 " +
-                    "where JobId = @JobId";
-                await conn.ExecuteAsync(query, new { JobId = jobId, StartTime = startTime, EndTime = endTime });
+                string sql =
+                    "insert into Flight(FlightId, DepartureDate, Gate, CheckInCounter ArrivalDate, City, Pilot) " +
+                    "values(@FlightId, @DepartureDate, @Gate, @CheckInCounter, @ArrivalDate, @City, @Pilot);";
+                await conn.ExecuteAsync(sql, flight);
             }
         }
 
-        public async Task<IEnumerable<MaintenanceJob>> GetMaintenanceJobsToBeInvoicedAsync()
+        public async Task<Flight> GetFlightAsync(string flightId)
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query =
-                    "select * from MaintenanceJob " +
-                    "where Finished = 1 " +
-                    "and InvoiceSent = 0";
-                return await conn.QueryAsync<MaintenanceJob>(query);
+                return await conn.QueryFirstOrDefaultAsync<Flight>("select * from Flight where FlightId = @FlightId",
+                    new { FlightId = flightId });
             }
         }
 
@@ -139,17 +122,9 @@ namespace Airport.InvoiceService.Repositories
             {
                 // persist invoice
                 string sql =
-                    "insert into Invoice(InvoiceId, InvoiceDate, CustomerId, Amount, Specification, JobIds) " +
-                    "values(@InvoiceId, @InvoiceDate, @CustomerId, @Amount, @Specification, @JobIds);";
+                    "insert into Invoice(InvoiceId, InvoiceDate, CustomerId, FlightId, Amount, Specification) " +
+                    "values(@InvoiceId, @InvoiceDate, @CustomerId, @FlightId @Amount, @Specification);";
                 await conn.ExecuteAsync(sql, invoice);
-
-                // update jobs to indicate invoice sent
-                var jobIds = invoice.JobIds.Split('|').Select(jobId => new { JobId = jobId });
-                sql =
-                    "update MaintenanceJob " +
-                    "set InvoiceSent = 1 " +
-                    "where JobId = @JobId ";
-                await conn.ExecuteAsync(sql, jobIds);
             }
         }
     }
