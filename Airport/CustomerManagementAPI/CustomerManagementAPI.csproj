@@ -6,6 +6,7 @@
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <UserSecretsId>6f76ccb4-7ef6-4aa5-a43f-21fd6d4f4ef5</UserSecretsId>
     <AssemblyName>Airport.CustomerManagementAPI</AssemblyName>
+    <RootNamespace>Airport.CustomerManagementAPI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
