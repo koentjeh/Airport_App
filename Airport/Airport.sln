@@ -17,11 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerManagementAPI", "Cu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalService", "RentalService\RentalService.csproj", "{BDB8C921-29D4-45B2-AB1D-673B796544A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightService", "FlightService\FlightService.csproj", "{30F099EC-839E-4EB6-A1E3-1FB6050FFAA4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "NotificationService\NotificationService.csproj", "{C7D67F90-B29E-41F2-AC29-112B442D0F21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityService", "SecurityService\SecurityService.csproj", "{D7C6F326-893E-4CB2-9F9D-9852BF99A589}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityService", "SecurityService\SecurityService.csproj", "{D7C6F326-893E-4CB2-9F9D-9852BF99A589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +55,6 @@ Global
 		{BDB8C921-29D4-45B2-AB1D-673B796544A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB8C921-29D4-45B2-AB1D-673B796544A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB8C921-29D4-45B2-AB1D-673B796544A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30F099EC-839E-4EB6-A1E3-1FB6050FFAA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30F099EC-839E-4EB6-A1E3-1FB6050FFAA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30F099EC-839E-4EB6-A1E3-1FB6050FFAA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30F099EC-839E-4EB6-A1E3-1FB6050FFAA4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7D67F90-B29E-41F2-AC29-112B442D0F21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7D67F90-B29E-41F2-AC29-112B442D0F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7D67F90-B29E-41F2-AC29-112B442D0F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
