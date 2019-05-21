@@ -1,21 +1,21 @@
-FROM microsoft/dotnet:2.2-sdk AS build-env
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-# Copy necessary files and restore as distinct layer
-COPY *.csproj ./
-RUN dotnet restore -s https://api.nuget.org/v3/index.json -s
+FROM microsoft/dotnet:2.2-sdk AS build
+WORKDIR /src
+COPY ["CustomerManagementAPI/CustomerManagementAPI.csproj", "CustomerManagementAPI/"]
+COPY ["Infrastructure.Messaging/Infrastructure.Messaging.csproj", "Infrastructure.Messaging/"]
+RUN dotnet restore "CustomerManagementAPI/CustomerManagementAPI.csproj"
+COPY . .
+WORKDIR /src/CustomerManagementAPI
+RUN dotnet build "CustomerManagementAPI.csproj" -c Release -o /app
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "CustomerManagementAPI.csproj" -c Release -o /app
 
-# Build runtime image
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
-COPY --from=build-env /app/out .
-
-# Expose ports
-EXPOSE 5100/tcp
-ENV ASPNETCORE_URLS http://*:5100
-HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:5100/hc || exit 1
-
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Airport.CustomerManagementAPI.dll"]

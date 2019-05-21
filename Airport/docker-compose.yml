@@ -84,15 +84,6 @@ services:
     environment:
       - DOTNET_ENVIRONMENT=Production
 
-  timeservice:
-    image: airport/timeservice:latest
-    build: TimeService
-    container_name: timeservice
-    depends_on:
-      - rabbitmq
-    environment:
-      - DOTNET_ENVIRONMENT=Production
-
 volumes:
   sqlserverdata:
     external: true    

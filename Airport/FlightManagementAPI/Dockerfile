@@ -8,7 +8,7 @@ COPY ["FlightManagementAPI/FlightManagementAPI.csproj", "FlightManagementAPI/"]
 COPY ["Infrastructure.Messaging/Infrastructure.Messaging.csproj", "Infrastructure.Messaging/"]
 RUN dotnet restore "FlightManagementAPI/FlightManagementAPI.csproj"
 COPY . .
-WORKDIR "/src/FlightManagementAPI"
+WORKDIR /src/FlightManagementAPI
 RUN dotnet build "FlightManagementAPI.csproj" -c Release -o /app
 
 FROM build AS publish
