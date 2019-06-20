@@ -13,3 +13,7 @@ services:
   customermanagementapi:
     ports:
       - "5100:5100"
+
+  rentalmanagementapi:
+    ports:
+      - "5200:5200"

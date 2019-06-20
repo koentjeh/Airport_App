@@ -42,7 +42,9 @@ services:
 
   customermanagementapi:
     image: airport/customermanagementapi:latest
-    build: CustomerManagementAPI
+    build: 
+      context: .
+      dockerfile: CustomerManagementAPI/Dockerfile
     depends_on:
       - rabbitmq
       - sqlserver
@@ -53,7 +55,9 @@ services:
 
   flightmanagementapi:
     image: airport/flightmanagementapi:latest
-    build: FlightManagementAPI
+    build: 
+      context: .
+      dockerfile: FlightManagementAPI/Dockerfile
     depends_on:
       - rabbitmq
       - sqlserver
@@ -64,7 +68,9 @@ services:
 
   rentalmanagementapi:
     image: airport/rentalmanagementapi:latest
-    build: RentalManagementAPI
+    build: 
+      context: .
+      dockerfile: RentalManagementAPI/Dockerfile
     depends_on:
       - rabbitmq
       - sqlserver
@@ -73,16 +79,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
-  invoiceservice:
-    image: airport/invoiceservice:latest
-    build: InvoiceService
-    container_name: invoiceservice
-    depends_on:
-      - rabbitmq
-      - sqlserver
-      - mailserver
-    environment:
-      - DOTNET_ENVIRONMENT=Production
+#  invoiceservice:
+#    image: airport/invoiceservice:latest
+#    build: InvoiceService
+#    container_name: invoiceservice
+#    depends_on:
+#      - rabbitmq
+#      - sqlserver
+#      - mailserver
+#    environment:
+#      - DOTNET_ENVIRONMENT=Production
 
 volumes:
   sqlserverdata:
