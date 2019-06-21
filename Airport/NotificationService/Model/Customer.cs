@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Airport.InvoiceService.Model
+namespace Airport.NotificationService.Model
 {
-   public class Customer
+    public class Customer
     {
         public string CustomerId { get; set; }
         public string Name { get; set; }

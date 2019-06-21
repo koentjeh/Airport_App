@@ -1,12 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Airport.Infrastructure.Messaging;
+using Airport.NotificationService.NotificiationChannels;
+using Airport.NotificationService.Repositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Airport.Infrastructure.Messaging;
-using System.Threading.Tasks;
-using System.IO;
+using NotificationService;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Airport.TimeService
+namespace Airport.NotificationService
 {
     class Program
     {
@@ -34,16 +40,32 @@ namespace Airport.TimeService
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddTransient<IMessagePublisher>((svc) =>
+                    services.AddTransient<IMessageHandler>((svc) =>
                     {
                         var rabbitMQConfigSection = hostContext.Configuration.GetSection("RabbitMQ");
                         string rabbitMQHost = rabbitMQConfigSection["Host"];
                         string rabbitMQUserName = rabbitMQConfigSection["UserName"];
                         string rabbitMQPassword = rabbitMQConfigSection["Password"];
-                        return new RabbitMQMessagePublisher(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport");
+                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Pitstop", "Notifications", ""); ;
                     });
 
-                    services.AddHostedService<TimeManager>();
+                    services.AddTransient<INotificationRepository>((svc) =>
+                    {
+                        var sqlConnectionString = hostContext.Configuration.GetConnectionString("NotificationServiceCN");
+                        return new SqlServerNotificationRepository(sqlConnectionString);
+                    });
+
+                    services.AddTransient<IEMailNotifier>((svc) =>
+                    {
+                        var mailConfigSection = hostContext.Configuration.GetSection("Email");
+                        string mailHost = mailConfigSection["Host"];
+                        int mailPort = Convert.ToInt32(mailConfigSection["Port"]);
+                        string mailUserName = mailConfigSection["User"];
+                        string mailPassword = mailConfigSection["Pwd"];
+                        return new SMTPEmailNotifier(mailHost, mailPort, mailUserName, mailPassword);
+                    });
+
+                    services.AddHostedService<NotificationManager>();
                 })
                 .UseSerilog((hostContext, loggerConfiguration) =>
                 {

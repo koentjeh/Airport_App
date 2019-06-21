@@ -49,14 +49,8 @@ namespace Airport.InvoiceService
                 case "CustomerRegistered":
                     await HandleAsync(messageObject.ToObject<CustomerRegistered>());
                     break;
-                case "MaintenanceJobPlanned":
-                    await HandleAsync(messageObject.ToObject<MaintenanceJobPlanned>());
-                    break;
-                case "MaintenanceJobFinished":
-                    await HandleAsync(messageObject.ToObject<MaintenanceJobFinished>());
-                    break;
-                case "DayHasPassed":
-                    await HandleAsync(messageObject.ToObject<DayHasPassed>());
+                case "FlightRegistered":
+                    await HandleAsync(messageObject.ToObject<FlightRegistered>());
                     break;
             }
             return true;
@@ -69,74 +63,39 @@ namespace Airport.InvoiceService
                 CustomerId = cr.CustomerId,
                 Name = cr.Name,
                 Address = cr.Address,
-                PostalCode = cr.PostalCode,
-                City = cr.City
+                City = cr.City,
+                Phone = cr.Phone,
+                Luggage = cr.Luggage
             };
 
             await _repo.RegisterCustomerAsync(customer);
         }
 
-        private async Task HandleAsync(MaintenanceJobPlanned mjp)
+        private async Task HandleAsync(FlightRegistered fr)
         {
-            MaintenanceJob job = new MaintenanceJob
+            Flight flight = new Flight
             {
-                JobId = mjp.JobId.ToString(),
-                CustomerId = mjp.CustomerInfo.Id,
-                LicenseNumber = mjp.VehicleInfo.LicenseNumber,
-                Description = mjp.Description
+                FlightId = fr.FlightId,
+                DepartureDate = fr.DepartureDate,
+                Gate = fr.Gate,
+                CheckInGate = fr.CheckInGate,
+                ArrivalDate = fr.ArrivalDate,
+                City = fr.City,
+                Pilot = fr.Pilot
             };
 
-            await _repo.RegisterMaintenanceJobAsync(job);
+            await _repo.RegisterFlightAsync(flight);
         }
 
-        private async Task HandleAsync(MaintenanceJobFinished mjf)
-        {
-            await _repo.MarkMaintenanceJobAsFinished(mjf.JobId, mjf.StartTime, mjf.EndTime);
-        }
-
-        private async Task HandleAsync(DayHasPassed dhp)
-        {
-            var jobs = await _repo.GetMaintenanceJobsToBeInvoicedAsync();
-            foreach (var jobsPerCustomer in jobs.GroupBy(job => job.CustomerId))
-            {
-                DateTime invoiceDate = DateTime.Now;
-                string customerId = jobsPerCustomer.Key;
-                Customer customer = await _repo.GetCustomerAsync(customerId);
-                Invoice invoice = new Invoice
-                {
-                    InvoiceId = $"{invoiceDate.ToString("yyyyMMddhhmmss")}-{customerId.Substring(0, 4)}",
-                    InvoiceDate = invoiceDate.Date,
-                    CustomerId = customer.CustomerId,
-                    JobIds = string.Join('|', jobsPerCustomer.Select(j => j.JobId))
-                };
-
-                StringBuilder specification = new StringBuilder();
-                decimal totalAmount = 0;
-                foreach (var job in jobsPerCustomer)
-                {
-                    TimeSpan duration = job.EndTime.Value.Subtract(job.StartTime.Value);
-                    decimal amount = Math.Round((decimal)duration.TotalHours * HOURLY_RATE, 2);
-                    totalAmount += amount;
-                    specification.AppendLine($"{job.EndTime.Value.ToString("dd-MM-yyyy")} : {job.Description} on vehicle with license {job.LicenseNumber} - Duration: {duration.TotalHours} hour - Amount: &euro; {amount}");
-                }
-                invoice.Specification = specification.ToString();
-                invoice.Amount = totalAmount;
-
-                await SendInvoice(customer, invoice);
-                await _repo.RegisterInvoiceAsync(invoice);
-            }
-        }
-
-        private async Task SendInvoice(Customer customer, Invoice invoice)
+        private async Task SendInvoice(Customer customer, Flight flight, Invoice invoice)
         {
             StringBuilder body = new StringBuilder();
 
             // top banner
             body.AppendLine("<htm><body style='width: 1150px; font-family: Arial;'>");
-            body.AppendLine("<image src='cid:banner.jpg'>");
 
             body.AppendLine("<table style='width: 100%; border: 0px; font-size: 25pt;'><tr>");
-            body.AppendLine("<td>Airport GARAGE</td>");
+            body.AppendLine("<td>Airport</td>");
             body.AppendLine("<td style='text-align: right;'>INVOICE</td>");
             body.AppendLine("</tr></table>");
 
@@ -166,8 +125,21 @@ namespace Airport.InvoiceService
             body.AppendLine("<td valign='top'>");
             body.AppendLine($"{customer.Name}<br/>");
             body.AppendLine($"{customer.Address}<br/>");
-            body.AppendLine($"{customer.PostalCode}<br/>");
             body.AppendLine($"{customer.City}<br/>");
+            body.AppendLine($"{customer.Phone}<br/>");
+            body.AppendLine($"{customer.Luggage}<br/>");
+            body.AppendLine("</td>");
+
+            body.AppendLine("<td width='50px' valign='top'>");
+            body.AppendLine("Flight details:");
+            body.AppendLine("</td>");
+
+            body.AppendLine("<td valign='top'>");
+            body.AppendLine($"{flight.Gate}<br/>");
+            body.AppendLine($"{flight.CheckInGate}<br/>");
+            body.AppendLine($"{flight.DepartureDate}<br/>");
+            body.AppendLine($"{flight.ArrivalDate}<br/>");
+            body.AppendLine($"{flight.City}<br/>");
             body.AppendLine("</td>");
 
             body.AppendLine("</tr></table>");
@@ -176,7 +148,7 @@ namespace Airport.InvoiceService
 
             // body
             body.AppendLine($"Dear {customer.Name},<br/><br/>");
-            body.AppendLine("Hereby we send you an invoice for maintenance we executed on your vehicle(s):<br/>");
+            body.AppendLine("Hereby we send you an invoice for your ticket you bought on the Airport:<br/>");
 
             body.AppendLine("<ol>");
             foreach (string specificationLine in invoice.Specification.Split('\n'))
@@ -207,7 +179,7 @@ namespace Airport.InvoiceService
 
             body.AppendLine("<td valign='top'>");
             body.AppendLine(": ING<br/>");
-            body.AppendLine(": Airport Garage<br/>");
+            body.AppendLine(": Airport<br/>");
             body.AppendLine(": NL20INGB0001234567<br/>");
             body.AppendLine($": {invoice.InvoiceId}<br/>");
             body.AppendLine("</td>");
@@ -223,19 +195,12 @@ namespace Airport.InvoiceService
             MailMessage mailMessage = new MailMessage
             {
                 From = new MailAddress("invoicing@airport.nl"),
-                Subject = $"airport Garage Invoice #{invoice.InvoiceId}"
+                Subject = $"Airport Invoice #{invoice.InvoiceId}"
             };
             mailMessage.To.Add("airport@prestoprint.nl");
 
             mailMessage.Body = body.ToString();
             mailMessage.IsBodyHtml = true;
-
-            Attachment bannerImage = new Attachment(@"Assets/banner.jpg");
-            string contentID = "banner.jpg";
-            bannerImage.ContentId = contentID;
-            bannerImage.ContentDisposition.Inline = true;
-            bannerImage.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
-            mailMessage.Attachments.Add(bannerImage);
 
             await _emailCommunicator.SendEmailAsync(mailMessage);
         }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace CustomerManagementAPI
+namespace Airport.CustomerManagementAPI
 {
     public class Program
     {
@@ -19,6 +19,7 @@ namespace CustomerManagementAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseSetting("https_port", "8080")
                 .UseStartup<Startup>();
     }
 }

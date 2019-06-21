@@ -1,7 +1,7 @@
 ﻿using Airport.Infrastructure.Messaging;
 using System;
 
-namespace Airport.InvoiceService.Events
+namespace Airport.NotificationService.Events
 {
     public class CustomerRegistered : Event
     {

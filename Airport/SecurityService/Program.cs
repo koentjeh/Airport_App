@@ -2,14 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Airport.Infrastructure.Messaging;
-using Airport.FlightService.Repositories;
 using Serilog;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Airport.FlightService
+namespace SecurityService
 {
     class Program
     {
@@ -43,14 +42,17 @@ namespace Airport.FlightService
                         string rabbitMQHost = rabbitMQConfigSection["Host"];
                         string rabbitMQUserName = rabbitMQConfigSection["UserName"];
                         string rabbitMQPassword = rabbitMQConfigSection["Password"];
-                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "Flights", ""); ;
+                        return new RabbitMQMessageHandler(rabbitMQHost, rabbitMQUserName, rabbitMQPassword, "Airport", "Security", ""); ;
                     });
 
-                    services.AddTransient<IFlightRepository>((svc) =>
+                    services.AddTransient<SecuritylogManagerConfig>((svc) =>
                     {
-                        var sqlConnectionString = hostContext.Configuration.GetConnectionString("FlightServiceCN");
-                        return new SqlServerFlightRepository(sqlConnectionString);
+                        var auditlogConfigSection = hostContext.Configuration.GetSection("Auditlog");
+                        string logPath = auditlogConfigSection["path"];
+                        return new SecuritylogManagerConfig { LogPath = logPath };
                     });
+
+                    services.AddHostedService<SecuritylogManager>();
                 })
                 .UseSerilog((hostContext, loggerConfiguration) =>
                 {

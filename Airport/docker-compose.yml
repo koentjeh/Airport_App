@@ -40,20 +40,11 @@ services:
     environment:
       - ACCEPT_EULA=Y 
 
-  flightmanagementapi:
-    image: airport/flightmanagementapi:latest
-    build: FlightManagementAPI
-    depends_on:
-      - rabbitmq
-      - sqlserver
-    ports:
-      - "5000"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-
   customermanagementapi:
     image: airport/customermanagementapi:latest
-    build: CustomerManagementAPI
+    build: 
+      context: .
+      dockerfile: CustomerManagementAPI/Dockerfile
     depends_on:
       - rabbitmq
       - sqlserver
@@ -62,9 +53,24 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
+  flightmanagementapi:
+    image: airport/flightmanagementapi:latest
+    build: 
+      context: .
+      dockerfile: FlightManagementAPI/Dockerfile
+    depends_on:
+      - rabbitmq
+      - sqlserver
+    ports:
+      - "5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
   rentalmanagementapi:
     image: airport/rentalmanagementapi:latest
-    build: RentalManagementAPI
+    build: 
+      context: .
+      dockerfile: RentalManagementAPI/Dockerfile
     depends_on:
       - rabbitmq
       - sqlserver
@@ -73,25 +79,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
-  invoiceservice:
-    image: airport/invoiceservice:latest
-    build: InvoiceService
-    container_name: invoiceservice
-    depends_on:
-      - rabbitmq
-      - sqlserver
-      - mailserver
-    environment:
-      - DOTNET_ENVIRONMENT=Production
-
-  timeservice:
-    image: airport/timeservice:latest
-    build: TimeService
-    container_name: timeservice
-    depends_on:
-      - rabbitmq
-    environment:
-      - DOTNET_ENVIRONMENT=Production
+#  invoiceservice:
+#    image: airport/invoiceservice:latest
+#    build: InvoiceService
+#    container_name: invoiceservice
+#    depends_on:
+#      - rabbitmq
+#      - sqlserver
+#      - mailserver
+#    environment:
+#      - DOTNET_ENVIRONMENT=Production
 
 volumes:
   sqlserverdata:
