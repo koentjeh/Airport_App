@@ -30,7 +30,7 @@ namespace Airport.CustomerManagementAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // add DBContext classes
-            var sqlConnectionString = _configuration.GetConnectionString("CustomerManagementCN");
+            var sqlConnectionString = _configuration.GetConnectionString("ConnectionStrings:CustomerManagementCN");
             services.AddDbContext<CustomerManagementDBContext>(options => options.UseSqlServer(sqlConnectionString));
 
             // add messagepublisher classes

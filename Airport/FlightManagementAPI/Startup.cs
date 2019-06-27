@@ -33,7 +33,7 @@ namespace Airport.FlightManagementAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // add DBContext classes
-            var sqlConnectionString = _configuration.GetConnectionString("FlightManagementCN");
+            var sqlConnectionString = _configuration.GetConnectionString("ConnectionStrings:FlightManagementCN");
             services.AddDbContext<FlightManagementDBContext>(options => options.UseSqlServer(sqlConnectionString));
 
             // add messagepublisher classes
