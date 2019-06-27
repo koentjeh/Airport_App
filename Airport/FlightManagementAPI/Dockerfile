@@ -17,4 +17,10 @@ RUN dotnet publish "FlightManagementAPI.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+
+# Expose ports
+EXPOSE 5000/tcp
+ENV ASPNETCORE_URLS http://*:5000
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:5000/hc || exit 1
+
 ENTRYPOINT ["dotnet", "Airport.FlightManagementAPI.dll"]

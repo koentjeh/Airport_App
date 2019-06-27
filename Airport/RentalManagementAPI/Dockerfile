@@ -18,4 +18,10 @@ RUN dotnet publish "RentalManagementAPI.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+
+# Expose ports
+EXPOSE 5200/tcp
+ENV ASPNETCORE_URLS http://*:5200
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:5200/hc || exit 1
+
 ENTRYPOINT ["dotnet", "Airport.RentalManagementAPI.dll"]

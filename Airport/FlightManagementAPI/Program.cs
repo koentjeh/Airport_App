@@ -9,16 +9,13 @@ namespace Airport.FlightManagementAPI
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args)
-                .Run();
+            BuildWebHost(args).Run();
         }
 
         private static IWebHost BuildWebHost(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .UseApplicationInsights()
                 .UseSerilog()
-                .UseHealthChecks("/hc")
                 .UseStartup<Startup>()
                 .Build();
         }

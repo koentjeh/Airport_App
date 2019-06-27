@@ -16,9 +16,7 @@ namespace Airport.RentalManagementAPI
         private static IWebHost BuildWebHost(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .UseApplicationInsights()
                 .UseSerilog()
-                .UseHealthChecks("/hc")
                 .UseStartup<Startup>()
                 .Build();
         }

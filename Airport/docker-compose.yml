@@ -14,7 +14,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=DEBmbwkSrzy9D1T9cJfa
       
   sqlserver:
-    image: microsoft/mssql-server-linux:latest
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     container_name: sqlserver
     volumes:
       - sqlserverdata:/var/opt/mssql 
@@ -23,7 +23,7 @@ services:
     environment:
       - ACCEPT_EULA=Y 
       - MSSQL_PID=Developer
-      - SA_PASSWORD=8jkGh47hnDw89Haq8LN2
+      - SA_PASSWORD=vML3sQjnuWvS3yBY
 
   mailserver:
     image: djfarrelly/maildev
