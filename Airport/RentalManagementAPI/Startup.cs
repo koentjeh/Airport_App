@@ -31,7 +31,7 @@ namespace Airport.RentalManagementAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // add DBContext classes
-            var sqlConnectionString = _configuration.GetConnectionString("ConnectionStrings:RentalManagementCN");
+            var sqlConnectionString = _configuration.GetConnectionString("RentalManagementCN");
             services.AddDbContext<RentalManagementDBContext>(options => options.UseSqlServer(sqlConnectionString));
 
             // add messagepublisher classes

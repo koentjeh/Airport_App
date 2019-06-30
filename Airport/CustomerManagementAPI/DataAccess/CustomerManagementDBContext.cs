@@ -13,6 +13,7 @@ namespace Airport.CustomerManagementAPI.DataAccess
     {
         public CustomerManagementDBContext(DbContextOptions<CustomerManagementDBContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<Customer> Customers { get; set; }

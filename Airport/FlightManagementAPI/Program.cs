@@ -16,6 +16,7 @@ namespace Airport.FlightManagementAPI
         {
             return WebHost.CreateDefaultBuilder(args)
                 .UseSerilog()
+                .UseHealthChecks("/hc")
                 .UseStartup<Startup>()
                 .Build();
         }
