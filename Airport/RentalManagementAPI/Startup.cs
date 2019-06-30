@@ -32,7 +32,7 @@ namespace Airport.RentalManagementAPI
         {
             // add DBContext classes
             var sqlConnectionString = _configuration.GetConnectionString("RentalManagementCN");
-            services.AddDbContext<RentalManagementDBContext>(options => options.UseSqlServer("server=sqlserver,1434;user id=sa;password=8jkGh47hnDw89Haq8LN2;database=RentalManagement;"));
+            services.AddDbContext<RentalManagementDBContext>(options => options.UseSqlServer("server=sqlserver,1433;user id=sa;password=8jkGh47hnDw89Haq8LN2;database=RentalManagement;"));
 
             // add messagepublisher classes
             var configSection = _configuration.GetSection("RabbitMQ");

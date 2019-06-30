@@ -32,7 +32,7 @@ namespace Airport.CustomerManagementAPI
         {
             // add DBContext classes
             var sqlConnectionString = _configuration.GetConnectionString("CustomerManagementCN");
-            services.AddDbContext<CustomerManagementDBContext>(options => options.UseSqlServer("server=sqlserver,1434;user id=sa;password=8jkGh47hnDw89Haq8LN2;database=CustomerManagement;"));
+            services.AddDbContext<CustomerManagementDBContext>(options => options.UseSqlServer("server=sqlserver,1433;user id=sa;password=8jkGh47hnDw89Haq8LN2;database=CustomerManagement;MultipleActiveResultSets=true;"));
 
             // add messagepublisher classes
             var configSection = _configuration.GetSection("RabbitMQ");
