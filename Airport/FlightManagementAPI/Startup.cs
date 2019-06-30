@@ -34,7 +34,7 @@ namespace Airport.FlightManagementAPI
         {
             // add DBContext classes
             var sqlConnectionString = _configuration.GetConnectionString("FlightManagementCN");
-            services.AddDbContext<FlightManagementDBContext>(options => options.UseSqlServer(sqlConnectionString));
+            services.AddDbContext<FlightManagementDBContext>(options => options.UseSqlServer("server=sqlserver,1434;user id=sa;password=8jkGh47hnDw89Haq8LN2;database=FlightManagement;"));
 
             // add messagepublisher classes
             var configSection = _configuration.GetSection("RabbitMQ");

@@ -3,17 +3,17 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
-COPY ["InvoiceService/InvoiceService.csproj", "InvoiceService/"]
+COPY ["SecurityService/SecurityService.csproj", "SecurityService/"]
 COPY ["Infrastructure.Messaging/Infrastructure.Messaging.csproj", "Infrastructure.Messaging/"]
-RUN dotnet restore "InvoiceService/InvoiceService.csproj"
+RUN dotnet restore "SecurityService/SecurityService.csproj"
 COPY . .
-WORKDIR "/src/InvoiceService"
-RUN dotnet build "InvoiceService.csproj" -c Release -o /app
+WORKDIR "/src/SecurityService"
+RUN dotnet build "SecurityService.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "InvoiceService.csproj" -c Release -o /app
+RUN dotnet publish "SecurityService.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Airport.InvoiceService.dll"]
+ENTRYPOINT ["dotnet", "Airport.SecurityService.dll"]

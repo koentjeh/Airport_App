@@ -23,7 +23,7 @@ services:
     environment:
       - ACCEPT_EULA=Y 
       - MSSQL_PID=Developer
-      - SA_PASSWORD=vML3sQjnuWvS3yBY
+      - SA_PASSWORD=8jkGh47hnDw89Haq8LN2
 
   mailserver:
     image: djfarrelly/maildev
@@ -79,16 +79,57 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
-#  invoiceservice:
-#    image: airport/invoiceservice:latest
-#    build: InvoiceService
-#    container_name: invoiceservice
-#    depends_on:
-#      - rabbitmq
-#      - sqlserver
-#      - mailserver
-#    environment:
-#      - DOTNET_ENVIRONMENT=Production
+  invoiceservice:
+    image: airport/invoiceservice:latest
+    build: 
+      context: .
+      dockerfile: InvoiceService/Dockerfile
+    container_name: invoiceservice
+    depends_on:
+      - rabbitmq
+      - sqlserver
+      - mailserver
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+
+  notificationservice:
+    image: airport/notificationservice:latest
+    build: 
+      context: .
+      dockerfile: NotificationService/Dockerfile
+    container_name: notificationservice
+    depends_on:
+      - rabbitmq
+      - sqlserver
+      - mailserver
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+
+  rentalservice:
+    image: airport/rentalservice:latest
+    build: 
+      context: .
+      dockerfile: RentalService/Dockerfile
+    container_name: rentalservice
+    depends_on:
+      - rabbitmq
+      - sqlserver
+      - mailserver
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+
+  securityservice:
+    image: airport/securityservice:latest
+    build: 
+      context: .
+      dockerfile: SecurityService/Dockerfile
+    container_name: securityservice
+    depends_on:
+      - rabbitmq
+      - sqlserver
+      - mailserver
+    environment:
+      - DOTNET_ENVIRONMENT=Production
 
 volumes:
   sqlserverdata:
